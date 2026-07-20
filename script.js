@@ -1,0 +1,176 @@
+const API_URL = "http://localhost:8080/employee";
+let editingId = null;
+
+
+
+function addEmployee(){
+
+    let id = document.getElementById("id").value;
+    let name = document.getElementById("name").value.trim();
+    let salary = document.getElementById("salary").value;
+
+    if(id === "" || name === "" || salary === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    if(parseInt(id) <= 0){
+        alert("ID must be a positive number");
+        return;
+    }
+
+    if(name.length < 3){
+        alert("Name must be at least 3 characters long");
+        return;
+    }
+
+    if(parseFloat(salary) <= 0){
+        alert("Salary must be grater than 0");
+        return;
+    }
+
+    if(editingId !== null){
+        updateEmployee();
+        return;
+    }
+
+
+    let employee = {
+
+        id: parseInt(id),
+
+        name: name,
+
+        salary: parseFloat(salary),
+
+    };
+
+
+    fetch(API_URL, {
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify(employee)
+
+    })
+
+    .then(response => response.text())
+
+    .then(data => {
+
+        alert("Employee Added Successfully");
+        
+        getEmployees();
+        
+    })
+    
+    .catch(error => console.log(error));
+
+}
+
+
+
+function getEmployees(){
+
+    fetch(API_URL)
+
+    .then(response => response.json())
+
+    .then(data => {
+
+
+        let table = document.getElementById("employeeTable");
+
+        table.innerHTML="";
+
+
+        data.forEach(emp => {
+
+
+            table.innerHTML += `
+
+            <tr>
+
+                <td>${emp.id}</td>
+
+                <td>${emp.name}</td>
+
+                <td>${emp.salary}</td>
+
+                <td>
+                    <button onclick="editEmployee(${emp.id}, '${emp.name}', ${emp.salary})">Edit</button>
+                    <button onclick="deleteEmployee(${emp.id})">Delete</button>
+                </td>
+
+            </tr>
+
+            `;
+
+
+        });
+
+
+    });
+
+}
+
+
+getEmployees();
+
+
+function editEmployee(id, name, salary){
+    editingId = id;
+    document.getElementById("id").value = id;
+    document.getElementById("name").value = name;
+    document.getElementById("salary").value = salary;
+
+    document.getElementById("saveBtn").innerText = "Update Employee";
+}
+
+
+
+function updateEmployee(){
+
+    let employee = {
+
+        id: editingId,
+        name: document.getElementById("name").value,
+        salary: parseFloat(document.getElementById("salary").value),
+    };
+
+    fetch(`${API_URL}/${editingId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(employee)
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert("Employee Updated Successfully");
+        editingId = null;
+        document.getElementById("saveBtn").innerText = "Add Employee";
+        getEmployees();
+    })
+    .catch(error => console.log(error));
+}
+
+function deleteEmployee(id){
+
+    if(confirm("Are you sure you want to delete this employee?")){
+
+        fetch(API_URL+ "/" + id, {
+            method: "DELETE"
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            getEmployees();
+        })
+        .catch(error => console.log(error));
+    }
+}

@@ -1,0 +1,38 @@
+body{
+    font-family: lato, sans-serif;
+    text-align:center;
+    h1
+    {text-shadow: white 0px 10px 5px;}
+
+    background-color:gray;
+    background-size:cover;
+}
+
+.container{
+    margin: 20px;
+}
+
+input{
+    padding:5px;
+    margin:10px;
+    background-color:lightgray;
+}
+
+button{
+    padding:5px 10px;
+    background:rgb(127, 137, 171);
+    color:black;
+    border:navy;
+}
+
+table{
+    margin:auto;
+    width:60%;
+    border-collapse:collapse;
+    background-color:yellow;
+}
+
+th,td{
+    border:1px solid black;
+    padding:10px;
+}
