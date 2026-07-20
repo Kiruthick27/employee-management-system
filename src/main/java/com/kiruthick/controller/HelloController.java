@@ -1,5 +1,7 @@
 package com.kiruthick.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,27 +26,34 @@ public class HelloController {
 		this.employeeService=employeeService;
 	}
 	@GetMapping("/employee")
-	public List<Employee> getEmployee() {
-		return employeeService.getEmployee();
+	public ResponseEntity<List<Employee>> getEmployee() {
+		
+		List<Employee> employee=employeeService.getEmployee();
+		return ResponseEntity.ok(employee);
 		
 	}
 	
 	@PostMapping("/employee")
-	public String addEmployee(@RequestBody Employee employee) {
+	public ResponseEntity<String> addEmployee(@RequestBody Employee employee) {
 		
-		return employeeService.addEmployee(employee);
+		String message= employeeService.addEmployee(employee);
+		return ResponseEntity.status(HttpStatus.CREATED).body(message);
+		
 	}
 	
 	@PutMapping("/employee/{id}")
-	public String updateEmployee(@PathVariable int id ,@RequestBody Employee employee) {
-		return employeeService.updateEmployee(id, employee);
+	public ResponseEntity<String> updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
+		
+		String message=employeeService.updateEmployee(id,employee);
+		return ResponseEntity.ok(message);
 		
 	}
 	
 	@DeleteMapping("/employee/{id}")
-	public String deleteEmployee(@PathVariable int id) {
+	public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
 		
-		return employeeService.deleteEmployee(id);
+		String message=employeeService.deleteEmployee(id);
+		return ResponseEntity.ok(message);
 	}
 	
 }

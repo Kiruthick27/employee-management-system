@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.kiruthick.exception.EmployeeNotFoundException;
 import com.kiruthick.model.Employee;
 import com.kiruthick.repository.EmployeeRepository;
 
@@ -35,7 +36,7 @@ public class EmployeeService {
 		}
 		else {
 			
-			return "Employee Not Found";
+			throw new EmployeeNotFoundException("Employee Not Found");
 			
 		}
 	}
@@ -49,7 +50,7 @@ public class EmployeeService {
 			return "Employee Deleted Successfully";
 		}else {
 			
-			return "Employee Not Found";
+			throw new EmployeeNotFoundException("Employee Not Found");
 			
 		}
 
