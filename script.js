@@ -9,15 +9,15 @@ function addEmployee(){
     let name = document.getElementById("name").value.trim();
     let salary = document.getElementById("salary").value;
 
-    if(id === "" || name === "" || salary === ""){
+    if(id === "" || name === "" || salary === "" || id ==="0"){
+        if(parseInt(id) <= 0){
+            alert("ID must be greater than ZERO number");
+            return;
+        }
         alert("Please fill all fields");
         return;
     }
 
-    if(parseInt(id) <= 0){
-        alert("ID must be a positive number");
-        return;
-    }
 
     if(name.length < 3){
         alert("Name must be at least 3 characters long");
@@ -172,5 +172,50 @@ function deleteEmployee(id){
             getEmployees();
         })
         .catch(error => console.log(error));
+    }
+}
+
+function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    if (username === "admin" && password === "admin") {
+        window.location.href = "index.html";
+        return;
+    }else{
+        alert("Invalid username or password");
+        return;
+    }
+}
+
+function registration() {
+    window.location.href = "registration.html";
+    return;
+
+}
+
+function register() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (username === "" || password === "" || confirmPassword === "") {
+        alert("Please fill all fields");
+        return;
+    }else if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+    }else{
+        alert("Registration successful");
+        window.location.href = "login.html";
+        return;
+    }
+}
+
+function logout() {
+    if(confirm("Are you sure you want to logout?")){
+        alert("Logout successful");
+        window.location.href = "login.html";
+        return;
     }
 }
