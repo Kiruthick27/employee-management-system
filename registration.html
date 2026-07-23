@@ -10,15 +10,16 @@
     <h1>EMPLOYEE MANAGEMENT SYSTEM</h1>
     <hr color="black">
     <h3>Register</h3>
-    <form action="index.html" method="post">
+    <form onsubmit="register(event)">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required placeholder="Enter your username"><br><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required placeholder="Enter your password"><br><br>
         <label for="confirmPassword">Confirm Password:</label>
         <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password"><br><br>
+        <button type="submit" onclick="window.location.href='login.html'">Already Registered</button>
+        <button type="submit" onclick="register(event)">Register</button>
+        <script src="script.js"></script>
     </form>
-    <button type="submit" onclick="register()">Register</button>
-    <script src="script.js"></script>
 </body>
 </html>

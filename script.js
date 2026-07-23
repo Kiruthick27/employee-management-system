@@ -1,4 +1,6 @@
 const API_URL = "http://localhost:8080/employee";
+const LOGIN_API_URL = "http://localhost:8080/Login";
+const REGISTRATION_API_URL = "http://localhost:8080/register";
 let editingId = null;
 
 
@@ -119,7 +121,9 @@ function getEmployees(){
 }
 
 
-getEmployees();
+if (document.getElementById("employeeTable")) {
+    getEmployees();
+}
 
 
 function editEmployee(id, name, salary){
@@ -175,17 +179,43 @@ function deleteEmployee(id){
     }
 }
 
-function login() {
-    const username = document.getElementById("username").value;
+function Login(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
 
-    if (username === "admin" && password === "admin") {
-        window.location.href = "index.html";
-        return;
-    }else{
-        alert("Invalid username or password");
+    if (username === "" || password === "") {
+        alert("Please fill all fields");
         return;
     }
+
+    const user = {
+        username: username,
+        password: password
+    };
+
+    fetch(LOGIN_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.text();
+        }
+
+        throw new Error("Invalid username or password");
+    })
+    .then(data => {
+        alert(data);
+        window.location.href = "index.html";
+    })
+    .catch(error => {
+        alert(error.message);
+    });
 }
 
 function registration() {
@@ -194,22 +224,56 @@ function registration() {
 
 }
 
-function register() {
-    const username = document.getElementById("username").value;
+function register(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
 
     if (username === "" || password === "" || confirmPassword === "") {
         alert("Please fill all fields");
         return;
-    }else if (password !== confirmPassword) {
+    }
+
+    if (password !== confirmPassword) {
         alert("Passwords do not match");
         return;
-    }else{
-        alert("Registration successful");
-        window.location.href = "login.html";
-        return;
     }
+
+    const user = {
+        username: username,
+        password: password
+    };
+
+    fetch(REGISTRATION_API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    })
+    .then(response => {
+        return response.text().then(message => ({
+            ok: response.ok,
+            message: message
+        }));
+    })
+    .then(result => {
+
+        if (!result.ok) {
+            alert(result.message);
+            return;
+        }
+
+        alert(result.message);
+        window.location.href = "login.html";
+    })
+    .catch(error => {
+        alert("Backend connection failed");
+        console.log(error);
+    });
 }
 
 function logout() {

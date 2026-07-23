@@ -10,15 +10,18 @@
     <h1>EMPLOYEE MANAGEMENT SYSTEM</h1>
     <hr color="black">
     <h3>Login</h3>
-    <form action="index.html" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required placeholder="Enter your username"><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password"><br><br>
-    </form>
-    
-    <button type="submit" onclick="login()">Login</button>
-    <button type="button" onclick="registration()">Register</button>
+   <form onsubmit="Login(event)">
+    <label for="username">Username:</label>
+    <input type="text" id="username" required>
+    <br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required>
+    <br><br>
+    <button type="submit">Login</button>
+    <br><br>
+</form>
+
+    <button type="button" onclick="registration(event)">Register</button>
     <script src="script.js"></script>
 </body>
 </html>
